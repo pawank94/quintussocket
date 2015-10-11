@@ -95,7 +95,7 @@ require(objectFiles, function() {
 			y: 50
 		}));
 		var trophy = stage.insert(new Q.Trophy({
-			x:1190,
+			x:1225,
 			y:560,
 			scale:1.1
 		}));
@@ -149,7 +149,7 @@ require(objectFiles, function() {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
 		}));
-		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "You Won!!!" }));
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Player 1 Won!!!" }));
 		container.fit(20);
 	});
 	var files = [
