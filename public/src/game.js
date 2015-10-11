@@ -90,6 +90,10 @@ require(objectFiles, function() {
 			x: 700,
 			y: 50
 		}));
+		var opponent = stage.insert( new Q.Opponent({
+			x: 500,
+			y: 50
+		}));
 		var trophy = stage.insert(new Q.Trophy({
 			x:1190,
 			y:560,

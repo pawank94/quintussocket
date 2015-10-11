@@ -1,4 +1,12 @@
 require([], function () {
+	Q.Sprite.extend('Opponent', {
+		init: function(p){
+			this._super(p,{
+				sheet: 'golplayer'
+		});
+		this.add('2d');
+		}
+	})
 	Q.Sprite.extend('Player', {
 	init: function (p) {
 		this._super(p, {
