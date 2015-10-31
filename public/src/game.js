@@ -1,4 +1,7 @@
 var counter=0;
+var gameId;
+var socket = io.connect('http://localhost:8080');
+//var opponent;
 var Q = Quintus()
 	.include('Sprites, Scenes, Input, 2D, Anim, Touch, UI')
 	.setup({
@@ -7,6 +10,7 @@ var Q = Quintus()
 var objectFiles = [
 	'./src/objects'];
 require(objectFiles, function() {
+	var opponent;
 	Q.scene('arena', function(stage) {
 		/*
 		*  collision layers
@@ -87,11 +91,7 @@ require(objectFiles, function() {
 		/////////////////objects////////////////////
 
 		var player = stage.insert(new Q.Player({
-			x: 700,
-			y: 50
-		}));
-		var opponent = stage.insert( new Q.Opponent({
-			x: 500,
+			x: 720,
 			y: 50
 		}));
 		var trophy = stage.insert(new Q.Trophy({
@@ -99,9 +99,14 @@ require(objectFiles, function() {
 			y:560,
 			scale:1.1
 		}));
+		var trophy = stage.insert(new Q.Trophy({
+			x:625,
+			y:560,
+			scale:1.1
+		}));
 		populateEnemy();//enemy population
 		/////////////////////////////////////////////
-		stage.add('viewport').follow(player,{x:true,y:false},{scale:1.5});//.centerOn(Q.width/2-40,Q.height/2-20);
+		stage.add('viewport').follow(player,{x:false,y:false},{scale:1.5});//.centerOn(Q.width/2-40,Q.height/2-20);
 		/*
 		* Enemy populate
 		*/
@@ -109,9 +114,12 @@ require(objectFiles, function() {
 		{
 			var a=0,b=0;
 			var si=setInterval(function(){
-				console.log('here');
 				var enemy = stage.insert(new Q.Enemy({
 					x: 680+a,
+					y: 300-b
+				}));
+				var enemy = stage.insert(new Q.Enemy({
+					x: 680+a-595,
 					y: 300-b
 				}));
 				if(a==200)
@@ -128,9 +136,34 @@ require(objectFiles, function() {
 					x: 1000+i*10,
 					y: 500
 				}));
+				var enemy = stage.insert(new Q.Enemy({
+					x: 1000+i*10-595,
+					y: 500
+				}));
 			}
 		}
-		///////////////////////////////////////
+		socket.on('connected',function(data){
+			gameId=data.pid;
+		});	
+		socket.on('connected_opponent',function(data){
+			console.log('connected_op');
+			if(!gameId)
+				gameId=data.pid;
+			Q.stage().unpause();
+			opponent = stage.insert( new Q.Opponent({
+				x: data.x,
+				y: data.y
+			}));
+		});	
+		socket.on('update_opponent_pos',function(data){
+			if(gameId!=data.pid)
+			{
+				opponent.p.x=data.x-595;
+				opponent.p.y=data.y;
+				opponent.p.flip=data.face;
+				// console.log(opponent.x+" "+opponent.y);
+			} 
+		});
 	});
 	/*
 	*	death scene
@@ -195,5 +228,6 @@ require(objectFiles, function() {
 		Q.compileSheets('/images/sprites.png', '/images/sprites.json');
 		Q.compileSheets('/images/tiles_map.png', '/images/tile.json');
 		Q.stageScene('arena', 0);
+		Q.stage().pause();
 	});
 });

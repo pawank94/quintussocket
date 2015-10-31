@@ -1,4 +1,5 @@
 require([], function () {
+	var oldpx,oldpy;
 	Q.Sprite.extend('Opponent', {
 		init: function(p){
 			this._super(p,{
@@ -6,7 +7,7 @@ require([], function () {
 		});
 		this.add('2d');
 		}
-	})
+	});
 	Q.Sprite.extend('Player', {
 	init: function (p) {
 		this._super(p, {
@@ -51,6 +52,17 @@ require([], function () {
 	    if(Q.inputs['right']  && this.p.direction == 'left') {
 	        this.p.flip = false;
 	    }
+	    if(!oldpx||!oldpy)
+		{
+			oldpx=this.p.x;
+			oldpy=this.p.y;
+		}
+		if(Math.abs(this.p.x-oldpx)>1||Math.abs(this.p.y-oldpy)>1)
+		{	
+			socket.emit('update',{x:this.p.x,y:this.p.y,face:this.p.flip,pid:gameId});
+			oldpx=this.p.x;
+			oldpy=this.p.y;
+		}
 	}
 	});
 	Q.Sprite.extend('Enemy' , {
@@ -59,7 +71,7 @@ require([], function () {
 				sheet: 'enemy',
 				vx: -100,
 				visiblityOnly: true,
-				scale:0.8
+				scale:0.8	
 			});
 			this.add('2d','aiBounce');
 			this.on('bump.left',function(collision){
@@ -67,6 +79,7 @@ require([], function () {
 				{
 					collision.obj.p.x=700;
 					collision.obj.p.y=50;
+					this.p.vx=100;
 					/*collision.obj.destroy();
 					Q.stageScene("dead",1);*/
 				}
@@ -82,6 +95,7 @@ require([], function () {
 					Q.stageScene("dead",1);*/
 					collision.obj.p.x=700;
 					collision.obj.p.y=50;
+					this.p.vx=-100;
 				}
 				else
 				{
@@ -98,7 +112,6 @@ require([], function () {
 	 });
 	Q.Sprite.extend("Trophy", {
 			init: function(p){
-				console.log('here');
 				this._super(p,{
 					sheet:'trophy'
 				});
