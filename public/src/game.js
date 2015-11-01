@@ -1,7 +1,8 @@
 var counter=0;
 var gameId;
+var win_id
 var socket = io.connect('http://localhost:8080');
-//var opponent;
+var opponent,player;
 var Q = Quintus()
 	.include('Sprites, Scenes, Input, 2D, Anim, Touch, UI')
 	.setup({
@@ -90,7 +91,7 @@ require(objectFiles, function() {
 		}));
 		/////////////////objects////////////////////
 
-		var player = stage.insert(new Q.Player({
+		player = stage.insert(new Q.Player({
 			x: 720,
 			y: 50
 		}));
@@ -106,7 +107,7 @@ require(objectFiles, function() {
 		}));
 		populateEnemy();//enemy population
 		/////////////////////////////////////////////
-		stage.add('viewport').follow(player,{x:false,y:false},{scale:1.5});//.centerOn(Q.width/2-40,Q.height/2-20);
+		stage.add('viewport').follow(player,{x:true,y:false},{scale:1.5});//.centerOn(Q.width/2-40,Q.height/2-20);
 		/*
 		* Enemy populate
 		*/
@@ -116,10 +117,6 @@ require(objectFiles, function() {
 			var si=setInterval(function(){
 				var enemy = stage.insert(new Q.Enemy({
 					x: 680+a,
-					y: 300-b
-				}));
-				var enemy = stage.insert(new Q.Enemy({
-					x: 680+a-595,
 					y: 300-b
 				}));
 				if(a==200)
@@ -136,12 +133,14 @@ require(objectFiles, function() {
 					x: 1000+i*10,
 					y: 500
 				}));
-				var enemy = stage.insert(new Q.Enemy({
-					x: 1000+i*10-595,
-					y: 500
-				}));
 			}
 		}
+		/*
+		*socket section
+		*/
+		socket.on('server_busy',function(){
+			Q.stageScene('busy');
+		});
 		socket.on('connected',function(data){
 			gameId=data.pid;
 		});	
@@ -150,6 +149,7 @@ require(objectFiles, function() {
 			if(!gameId)
 				gameId=data.pid;
 			Q.stage().unpause();
+			Q.stageScene('playerId',1);
 			opponent = stage.insert( new Q.Opponent({
 				x: data.x,
 				y: data.y
@@ -163,6 +163,13 @@ require(objectFiles, function() {
 				opponent.p.flip=data.face;
 				// console.log(opponent.x+" "+opponent.y);
 			} 
+		});
+		socket.on('win',function(data){
+			win_id=data.id;
+			Q.stage().pause();
+			player.destroy();
+			opponent.destroy();
+			Q.stageScene('win',2);
 		});
 	});
 	/*
@@ -182,8 +189,28 @@ require(objectFiles, function() {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
 		}));
-		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Player 1 Won!!!" }));
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Player "+win_id+" Won!!!" }));
 		container.fit(20);
+	});
+	/*
+	*server busy
+	*/
+	Q.scene('busy',function(stage){
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
+		}));
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Server is busy!! try again later.." }));
+		container.fit(20);
+	});
+	/*
+	*playerID
+	*/
+	Q.scene('playerId',function(stage){
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2-60, y: 30, fill: "rgb(0,0,0)"
+		}));
+		var label = container.insert(new Q.UI.Text({x:8, y: -5, color:"rgb(0,151,123)" ,label: gameId+"" }));
+		container.fit(10);
 	});
 	var files = [
 		'/images/tiles.png',
@@ -227,7 +254,7 @@ require(objectFiles, function() {
 		});
 		Q.compileSheets('/images/sprites.png', '/images/sprites.json');
 		Q.compileSheets('/images/tiles_map.png', '/images/tile.json');
-		Q.stageScene('arena', 0);
+		Q.stageScene('arena');
 		Q.stage().pause();
 	});
 });

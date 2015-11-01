@@ -17,15 +17,22 @@ io.on('connection', function (socket) {
 		io.emit('connected',{pid:playercount});
 		console.log(playercount);
 	}
-	else
+	else if(playercount==2)
 	{
 		io.emit('connected_opponent', {x:125,y:50,pid:playercount});
 		console.log(playercount);
+	}
+	else{
+		socket.emit('server_busy');
 	}
 	}, 1500);
 	socket.on('update',function(data){
 		//console.log(data);
 		io.emit('update_opponent_pos',data);
+	});
+	socket.on('win',function(data){
+		console.log(data);
+		io.emit('win',data);
 	});
 	});
 server.listen(8080);

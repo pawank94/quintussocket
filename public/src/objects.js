@@ -23,8 +23,8 @@ require([], function () {
 		if(collision.obj.isA('Trophy'))
 		{
 			this.p.direction = "top";
-			Q.stageScene("win",2);
 			Q.stage().pause();
+			socket.emit('win',{id:gameId});
 			this.p.x+=40;
 			collision.obj.destroy();
 			counter=1;
