@@ -146,10 +146,7 @@ require(objectFiles, function() {
 		});
 		socket.on('disconnected',function(data){
 			socket.disconnect();
-<<<<<<< HEAD
 			Q.clearStages();
-=======
->>>>>>> 0f02b04d9358d0f0982e09a72d70470d36f6871b
 			Q.stageScene('connection_lost',0);
 		});	
 		socket.on('connected_opponent',function(data){
