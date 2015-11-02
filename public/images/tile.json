@@ -1,0 +1,66 @@
+{
+    "simple_block": {
+        "sx": 0,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "pipe": {
+        "sx": 35,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "pipe_head": {
+        "sx": 70,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "box": {
+        "sx": 105,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "water": {
+        "sx": 140,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "water_varient": {
+        "sx": 175,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "grass": {
+        "sx": 210,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    },
+    "bg": {
+        "sx": 245,
+        "sy": 0,
+        "rows": 1,
+        "tilew": 35,
+        "tileh": 35,
+        "frames": 1
+    }
+}
