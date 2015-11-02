@@ -139,6 +139,7 @@ require(objectFiles, function() {
 		*socket section
 		*/
 		socket.on('server_busy',function(){
+			Q.clearStages();
 			Q.stageScene('busy');
 		});
 		socket.on('connected',function(data){

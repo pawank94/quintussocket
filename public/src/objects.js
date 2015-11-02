@@ -46,9 +46,9 @@ require([], function () {
 	///////////////////////////////////
 	},
 	step: function (dt) {
-		if(Q.inputs['left'] && this.p.direction == 'right') {
-            this.p.flip = 'x';
-        }
+	    if(Q.inputs['left'] && this.p.direction == 'right') {
+         	   this.p.flip = 'x';
+	    }
 	    if(Q.inputs['right']  && this.p.direction == 'left') {
 	        this.p.flip = false;
 	    }
@@ -57,7 +57,7 @@ require([], function () {
 			oldpx=this.p.x;
 			oldpy=this.p.y;
 		}
-		if(Math.abs(this.p.x-oldpx)>1||Math.abs(this.p.y-oldpy)>1)
+		if(Math.abs(this.p.x-oldpx)>5)
 		{	
 			socket.emit('update',{x:this.p.x,y:this.p.y,face:this.p.flip,pid:gameId});
 			oldpx=this.p.x;
