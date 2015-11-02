@@ -1,7 +1,11 @@
 var counter=0;
 var gameId;
 var win_id
+<<<<<<< HEAD
 var socket = io.connect('http://128.199.197.77:8080');
+=======
+var socket = io.connect('http://localhost:8080');
+>>>>>>> 0f02b04d9358d0f0982e09a72d70470d36f6871b
 var opponent,player;
 var Q = Quintus()
 	.include('Sprites, Scenes, Input, 2D, Anim, Touch, UI')
@@ -146,7 +150,10 @@ require(objectFiles, function() {
 		});
 		socket.on('disconnected',function(data){
 			socket.disconnect();
+<<<<<<< HEAD
 			Q.clearStages();
+=======
+>>>>>>> 0f02b04d9358d0f0982e09a72d70470d36f6871b
 			Q.stageScene('connection_lost',0);
 		});	
 		socket.on('connected_opponent',function(data){
@@ -284,4 +291,8 @@ require(objectFiles, function() {
 		Q.stageScene('waiting',1);
 		Q.stage().pause();
 	});
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 0f02b04d9358d0f0982e09a72d70470d36f6871b
