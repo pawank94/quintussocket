@@ -26,15 +26,17 @@ io.on('connection', function (socket) {
 		socket.emit('server_busy');
 	}
 	}, 1500);
+	socket.on('disconnect',function(data){
+		io.emit('disconnected');
+		playercount=0;
+	});
 	socket.on('update',function(data){
 		//console.log(data);
 		io.emit('update_opponent_pos',data);
 	});
 	socket.on('win',function(data){
-		console.log(data);
 		io.emit('win',data);
-		socket.disconnect();
-		playercount=0;
+        playercount=0;
 	});
 	});
 server.listen(8080);

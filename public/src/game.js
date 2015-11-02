@@ -143,9 +143,15 @@ require(objectFiles, function() {
 		});
 		socket.on('connected',function(data){
 			gameId=data.pid;
+		});
+		socket.on('disconnected',function(data){
+			socket.disconnect();
+			Q.clearStages();
+			Q.stageScene('connection_lost',0);
 		});	
 		socket.on('connected_opponent',function(data){
-			console.log('connected_op');
+			console.log('here');
+			
 			if(!gameId)
 				gameId=data.pid;
 			Q.stage().unpause();
@@ -189,8 +195,8 @@ require(objectFiles, function() {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
 		}));
-		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Player "+win_id+" Won!!!" }));
-		container.fit(20);
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "\t \t   Player "+win_id+" Won!!! \n Refresh to play again" }));
+		container.fit(30);
 	});
 	/*
 	*server busy
@@ -203,7 +209,17 @@ require(objectFiles, function() {
 		container.fit(20);
 	});
 	/*
-	*playerID
+	*connection lost
+	*/
+	Q.scene('connection_lost',function(stage){
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
+		}));
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Connection lost or server reset by other side :( :(" }));
+		container.fit(20);
+	});
+	/*
+	* playerID
 	*/
 	Q.scene('playerId',function(stage){
 		var container = stage.insert(new Q.UI.Container({
@@ -211,6 +227,16 @@ require(objectFiles, function() {
 		}));
 		var label = container.insert(new Q.UI.Text({x:8, y: -5, color:"rgb(0,151,123)" ,label: gameId+"" }));
 		container.fit(10);
+	});
+	/* 
+	* waiting scene 
+	*/
+	Q.scene('waiting',function(stage){
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
+		}));
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "Waiting for other player!!" }));
+		container.fit(20);
 	});
 	var files = [
 		'/images/tiles.png',
@@ -254,7 +280,8 @@ require(objectFiles, function() {
 		});
 		Q.compileSheets('/images/sprites.png', '/images/sprites.json');
 		Q.compileSheets('/images/tiles_map.png', '/images/tile.json');
-		Q.stageScene('arena');
+		Q.stageScene('arena',0);
+		Q.stageScene('waiting',1);
 		Q.stage().pause();
 	});
 });
