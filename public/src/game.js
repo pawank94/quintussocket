@@ -1,11 +1,7 @@
 var counter=0;
 var gameId;
 var win_id
-<<<<<<< HEAD
 var socket = io.connect('http://128.199.197.77:8080');
-=======
-var socket = io.connect('http://localhost:8080');
->>>>>>> 0f02b04d9358d0f0982e09a72d70470d36f6871b
 var opponent,player;
 var Q = Quintus()
 	.include('Sprites, Scenes, Input, 2D, Anim, Touch, UI')
