@@ -284,8 +284,4 @@ require(objectFiles, function() {
 		Q.stageScene('waiting',1);
 		Q.stage().pause();
 	});
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 0f02b04d9358d0f0982e09a72d70470d36f6871b
