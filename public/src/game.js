@@ -196,7 +196,7 @@ require(objectFiles, function() {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2, y: Q.height/2, fill: "rgb(0,0,0)"
 		}));
-		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: "\t \t   Player "+win_id+" Won!!! \n Refresh to play again" }));
+		var label = container.insert(new Q.UI.Text({x:10, y: -10, color:"rgb(0,151,123)" ,label: " Player "+win_id+" Won!!! Refresh to play again" }));
 		container.fit(30);
 	});
 	/*
